@@ -6,10 +6,6 @@ import store from './store'
 Vue.config.productionTip = false
 
 
-const token = window.localStorage.getItem('token');
-if (token) {
-  store.dispatch('setToken', token);
-}
 
 new Vue({
   vuetify,

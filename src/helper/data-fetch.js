@@ -1,13 +1,12 @@
 import axios from 'axios';
-
-import Cookies from 'js-cookie'
+import store from '@/store'
 
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:0308/api',
+  baseURL: 'http://localhost:7070/api',
 });
 
-apiClient.defaults.headers.common['Authorization'] = Cookies.get('token')
+apiClient.defaults.headers.common['Authorization'] = store.state.token;
 
 // Reusable function for handling API responses
 const handleResponse = (response) => {

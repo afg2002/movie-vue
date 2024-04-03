@@ -68,7 +68,7 @@ export default {
       };
 
       axios
-        .post('http://localhost:0308/api/users/login', credentials)
+        .post('http://localhost:7070/api/users/login', credentials)
         .then((response) => {
           if(response.data.responseCode === '02' || response.data.responseCode === '01'){
             this.errorMessage = response.data.responseMessage
