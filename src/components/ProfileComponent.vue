@@ -1,7 +1,6 @@
 <template>
     <v-app>
-        <v-main>
-            <v-container>
+     <v-container>
       <v-row justify="center">
         <v-col cols="12" sm="8" md="6">
           <v-card class="profile-card">
@@ -9,6 +8,12 @@
             <v-divider></v-divider>
             <v-card-text>
               <v-list>
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title>User ID:</v-list-item-title>
+                    <v-list-item-subtitle>{{ user.userId }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
                 <v-list-item>
                   <v-list-item-content>
                     <v-list-item-title>Nama:</v-list-item-title>
@@ -30,7 +35,6 @@
         </v-col>
       </v-row>
     </v-container>
-        </v-main>
     </v-app>
   </template>
   

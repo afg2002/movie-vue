@@ -2,7 +2,9 @@
   <div id="app">
     <v-app>
       <Navbar v-if="$route.meta.layout !== false" />
+      <v-main>
       <router-view/>
+      </v-main>
     </v-app>
   </div>
 </template>

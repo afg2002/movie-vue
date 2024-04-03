@@ -17,6 +17,9 @@ export default new Vuex.Store({
     },
     getProfile(state){
       return state.profile
+    },
+    getToken(state){
+      return state.token
     }
   },
   mutations: {

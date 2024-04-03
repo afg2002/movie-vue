@@ -1,12 +1,31 @@
 import axios from 'axios';
 import store from '@/store'
+import router from '@/router/'
 
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:7070/api',
+  baseURL: 'http://localhost:0308/api',
 });
 
-apiClient.defaults.headers.common['Authorization'] = store.state.token;
+
+apiClient.interceptors.request.use(async config =>{
+  const token = await store.getters.getToken
+  config.headers.Authorization  = token;
+
+  return config
+})
+
+apiClient.interceptors.response.use(
+  (response) => {
+    if(response.data.responseCode === '03'){
+      // Token has expired, handle here
+      store.commit('setToken', null); // Clear token from store
+      // Redirect to login page
+      router.push('/')
+    }
+    return response;
+  },
+);
 
 // Reusable function for handling API responses
 const handleResponse = (response) => {
@@ -47,3 +66,26 @@ export const fetchBookingsData = async () => {
     throw error; // Re-throw to allow for further handling
   }
 };
+
+
+export const saveBooking = async (booking)=>{
+  try{
+    const response = await apiClient.post('/booking/add-booking',booking);
+    return handleResponse(response)
+  }catch(error){
+    console.error('Error save booking data:', error);
+    throw error; 
+  }
+}
+
+
+
+export const getBookingsByMovieIdAndScreeningTime = async(movieId,screeningTime)=>{
+  try{
+    const response = await apiClient.get(`/booking/list-booking/${movieId}/${screeningTime}`)
+    return response
+  }catch(error){
+    console.error('Error get booking data by movie id and screening time :', error);
+    throw error; 
+  }
+}

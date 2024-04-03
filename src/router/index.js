@@ -5,6 +5,7 @@ import LoginView from '@/views/LoginView.vue'
 import MoviesView from '@/views/MoviesView.vue'
 import MoviesDetailView from '@/views/MoviesDetailView.vue'
 import Profile from '@/components/ProfileComponent.vue'
+import HistoryComponent from '@/components/HistoryComponent.vue';
 
 Vue.use(VueRouter)
 
@@ -32,6 +33,12 @@ const routes = [
     path : '/profile',
     name : 'profile',
     component : Profile,
+    meta: { requiresAuth: true }
+  },
+  {
+    path : '/history',
+    name : 'history',
+    component : HistoryComponent,
     meta: { requiresAuth: true }
   },
   {
