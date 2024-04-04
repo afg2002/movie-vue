@@ -18,9 +18,7 @@ apiClient.interceptors.request.use(async config =>{
 apiClient.interceptors.response.use(
   (response) => {
     if(response.data.responseCode === '03'){
-      // Token has expired, handle here
-      store.commit('setToken', null); // Clear token from store
-      // Redirect to login page
+      store.commit('setToken', null); 
       router.push('/')
     }
     return response;
@@ -36,7 +34,7 @@ const handleResponse = (response) => {
   }
 };
 
-export const fetchMoviesData = async () => {
+ const fetchMoviesData = async () => {
   try {
     const response = await apiClient.get('/movies/get-movies');
     return handleResponse(response);
@@ -46,7 +44,7 @@ export const fetchMoviesData = async () => {
   }
 };
 
-export const fetchMoviesById = async (id)=>{
+ const fetchMoviesById = async (id)=>{
   try{
     const response = await apiClient.get(`/movies/get-movies/${id}`);
     return handleResponse(response)
@@ -57,7 +55,7 @@ export const fetchMoviesById = async (id)=>{
   }
 }
 
-export const fetchBookingsData = async () => {
+ const fetchBookingsData = async () => {
   try {
     const response = await apiClient.get('/booking/list-booking');
     return handleResponse(response);
@@ -68,7 +66,7 @@ export const fetchBookingsData = async () => {
 };
 
 
-export const saveBooking = async (booking)=>{
+ const saveBooking = async (booking)=>{
   try{
     const response = await apiClient.post('/booking/add-booking',booking);
     return handleResponse(response)
@@ -79,8 +77,7 @@ export const saveBooking = async (booking)=>{
 }
 
 
-
-export const getBookingsByMovieIdAndScreeningTime = async(movieId,screeningTime)=>{
+ const getBookingsByMovieIdAndScreeningTime = async(movieId,screeningTime)=>{
   try{
     const response = await apiClient.get(`/booking/list-booking/${movieId}/${screeningTime}`)
     return response
@@ -89,3 +86,23 @@ export const getBookingsByMovieIdAndScreeningTime = async(movieId,screeningTime)
     throw error; 
   }
 }
+
+ const cancelBookingById = async(bookingId) =>{
+  try{
+    const response = await apiClient.delete(`/booking/delete-booking/${bookingId}`);
+    return response
+  }catch(error){
+    console.error("Error ")
+  }
+}
+
+const dataFetch = {
+  cancelBookingById,
+  getBookingsByMovieIdAndScreeningTime,
+  saveBooking,
+  fetchBookingsData,
+  fetchMoviesById,
+  fetchMoviesData
+}
+
+export default dataFetch;

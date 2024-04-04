@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { fetchMoviesData } from '@/helper/data-fetch';
+import dataFetch from '@/helper/data-fetch';
 import store from '@/store';
 
 export default {
@@ -50,7 +50,7 @@ export default {
   },
   mounted() {
     this.isLoading = true;
-    fetchMoviesData()
+    dataFetch.fetchMoviesData()
       .then((movies) => {
         this.movies = movies;
       })

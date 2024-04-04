@@ -5,7 +5,7 @@ import LoginView from '@/views/LoginView.vue'
 import MoviesView from '@/views/MoviesView.vue'
 import MoviesDetailView from '@/views/MoviesDetailView.vue'
 import Profile from '@/components/ProfileComponent.vue'
-import HistoryComponent from '@/components/HistoryComponent.vue';
+import BookingHistoryView from '@/components/BookingHistory/BookingHistoryView.vue';
 
 Vue.use(VueRouter)
 
@@ -38,7 +38,7 @@ const routes = [
   {
     path : '/history',
     name : 'history',
-    component : HistoryComponent,
+    component : BookingHistoryView,
     meta: { requiresAuth: true }
   },
   {
@@ -50,7 +50,12 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior() {
+    return new Promise((resolve) => {
+      resolve({ left: 0, top: 0 })
+    })
+  }
 })
 
 router.beforeEach((to, from, next) => {

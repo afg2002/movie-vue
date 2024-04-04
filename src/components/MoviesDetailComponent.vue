@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import { fetchMoviesById, saveBooking, getBookingsByMovieIdAndScreeningTime } from '@/helper/data-fetch.js';
+import dataFetch from '@/helper/data-fetch.js';
 import store from '@/store/index.js';
 
 export default {
@@ -152,7 +152,8 @@ export default {
       return '';
     },
     isSeatBooked() {
-      return (seat) => this.bookedSeats.includes(seat);
+      const allBookedSeats = this.bookedSeats.flat();
+      return (seat) => allBookedSeats.includes(seat);
     },
     isBookNowDisabled() {
       // Tombol dinonaktifkan jika tidak ada waktu yang dipilih, tidak ada kursi yang dipilih, atau kursi yang dipilih telah dipesan
@@ -183,7 +184,7 @@ export default {
       this.isLoading = true;
       this.error = null;
       try {
-        this.movie = await fetchMoviesById(id);
+        this.movie = await dataFetch.fetchMoviesById(id);
         this.movie.screeningTime = ['09:00', '12:00', '15:00 ', '18:00 ', '20:00'];
       } catch (error) {
         console.error('Error fetching movie detail:', error);
@@ -204,9 +205,10 @@ export default {
     },
     selectTime(time) {
       this.selectedTime = time;
-      getBookingsByMovieIdAndScreeningTime(this.movie.id, this.selectedTime).then((res) => {
+      dataFetch.getBookingsByMovieIdAndScreeningTime(this.movie.id, this.selectedTime).then((res) => {
         const seatNumbers = res.data.data.map(booking => booking.seatNumber);
         this.bookedSeats = seatNumbers;
+        
       })
     },
     bookNow() {
@@ -226,9 +228,12 @@ export default {
         userId: store.state.profile.userId
       }
       
-      saveBooking(fillableMovie)
+      dataFetch.saveBooking(fillableMovie)
         .then(() => {
           this.showSuccessSnackbar('Booking successfull');
+          setTimeout(() => {
+            this.$router.push('/movies');
+          }, 1000);
         })
         .catch(() => {
           this.showErrorSnackbar('Failed to make booking!');
