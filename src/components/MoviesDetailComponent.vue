@@ -113,7 +113,8 @@
 </template>
 
 <script>
-import dataFetch from '@/helper/data-fetch.js';
+import Movies from '@/api/movies';
+import Booking from '@/api/booking';
 import store from '@/store/index.js';
 
 export default {
@@ -184,7 +185,7 @@ export default {
       this.isLoading = true;
       this.error = null;
       try {
-        this.movie = await dataFetch.fetchMoviesById(id);
+        this.movie = await Movies.fetchMoviesById(id);
         this.movie.screeningTime = ['09:00', '12:00', '15:00 ', '18:00 ', '20:00'];
       } catch (error) {
         console.error('Error fetching movie detail:', error);
@@ -205,11 +206,18 @@ export default {
     },
     selectTime(time) {
       this.selectedTime = time;
-      dataFetch.getBookingsByMovieIdAndScreeningTime(this.movie.id, this.selectedTime).then((res) => {
-        const seatNumbers = res.data.data.map(booking => booking.seatNumber);
+      Booking.getBookingsByMovieIdAndScreeningTime(this.movie.id, this.selectedTime)
+      .then((res) => {
+        console.log(res);
+
+        const activeBookings = res.data.data.filter(booking => booking.status !== 'Cancel');
+
+        const seatNumbers = activeBookings.map(booking => booking.seatNumber);
+        console.log(seatNumbers);
+
         this.bookedSeats = seatNumbers;
-        
-      })
+      });
+
     },
     bookNow() {
       if (this.selectedTime == null) {
@@ -228,7 +236,7 @@ export default {
         userId: store.state.profile.userId
       }
       
-      dataFetch.saveBooking(fillableMovie)
+      Booking.saveBooking(fillableMovie)
         .then(() => {
           this.showSuccessSnackbar('Booking successfull');
           setTimeout(() => {
@@ -243,3 +251,4 @@ export default {
 };
 </script>
 
+@/api/data-fetch.js

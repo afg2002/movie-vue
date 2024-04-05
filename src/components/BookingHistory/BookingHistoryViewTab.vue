@@ -18,7 +18,8 @@
 import BookingHistoryViewTabActive from './BookingHistoryViewTabActive.vue'
 import BookingHistoryViewTabSuccess from './BookingHistoryViewTabSuccess.vue'
 import BookingHistoryViewTabCancel from './BookingHistoryViewTabCancel.vue'
-import dataFetch from '@/helper/data-fetch';
+import Bookings from '@/api/booking'
+import Movies from '@/api/movies'
 export default {
     name : 'BookingHistoryViewTab',
     components : {
@@ -57,7 +58,7 @@ export default {
     methods : {
         async cancelBooking(id){
             console.log(id)
-            dataFetch.cancelBookingById(id).then((res) =>{
+            Bookings.cancelBookingById(id).then((res) =>{
                 if(res.data.responseCode == '00' && res.data){
                     this.tabsItem[0].data = ''
                 }
@@ -67,12 +68,12 @@ export default {
         async loadBookings() {
             this.isLoading = true;
             try {
-                let bookings = await dataFetch.fetchBookingsData();
+                let bookings = await Bookings.fetchBookingsData();
                 let dataActive = [];
                 let dataSuccess = [];
                 let dataCancel = [];
                 await bookings.map(async (booking)=>{
-                    let movie = await dataFetch.fetchMoviesById(booking.movieId);
+                    let movie = await Movies.fetchMoviesById(booking.movieId);
                     booking.moviePoster = movie.poster
                     booking.movieTitle = movie.title
                     if(booking.status.toLowerCase() === 'aktif'){
@@ -96,3 +97,4 @@ export default {
     
 }
 </script>
+@/api/data-fetch

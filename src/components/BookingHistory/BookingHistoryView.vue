@@ -2,7 +2,7 @@
     <v-app>
         <v-container>
             <h1 class="text-center mb-4">Booking History</h1>
-            <booking-history-view-tab></booking-history-view-tab>
+            <BookingHistoryViewTab/>
         </v-container>
     </v-app>
 </template>

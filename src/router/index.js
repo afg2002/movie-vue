@@ -2,7 +2,7 @@ import Vue from 'vue'
 import store from '@/store';
 import VueRouter from 'vue-router'
 import LoginView from '@/views/LoginView.vue'
-import MoviesView from '@/views/MoviesView.vue'
+import MoviesView from '@/components/Movies/MoviesView.vue'
 import MoviesDetailView from '@/views/MoviesDetailView.vue'
 import Profile from '@/components/ProfileComponent.vue'
 import BookingHistoryView from '@/components/BookingHistory/BookingHistoryView.vue';
