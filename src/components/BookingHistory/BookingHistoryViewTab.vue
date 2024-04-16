@@ -57,7 +57,6 @@ export default {
     },
     methods : {
         async cancelBooking(id){
-            console.log(id)
             Bookings.cancelBookingById(id).then((res) =>{
                 if(res.data.responseCode == '00' && res.data){
                     this.tabsItem[0].data = ''
@@ -97,4 +96,3 @@ export default {
     
 }
 </script>
-@/api/data-fetch

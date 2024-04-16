@@ -186,7 +186,7 @@ export default {
       this.error = null;
       try {
         this.movie = await Movies.fetchMoviesById(id);
-        this.movie.screeningTime = ['09:00', '12:00', '15:00 ', '18:00 ', '20:00'];
+        this.movie.screeningTime = ['09:00', '12:00', '15:00', '18:00', '20:00'];
       } catch (error) {
         console.error('Error fetching movie detail:', error);
         this.error = 'Failed to fetch movie detail.';
@@ -250,5 +250,3 @@ export default {
   },
 };
 </script>
-
-@/api/data-fetch.js
