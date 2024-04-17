@@ -179,6 +179,8 @@ export default {
     },
     confirmBooking() {
       this.bookNow()
+      this.bookedSeats.push(this.selectedSeats)
+      this.selectedSeats = []
       this.confirmDialog = false
     },
     async fetchMovieDetail(id) {
@@ -208,12 +210,10 @@ export default {
       this.selectedTime = time;
       Booking.getBookingsByMovieIdAndScreeningTime(this.movie.id, this.selectedTime)
       .then((res) => {
-        console.log(res);
 
         const activeBookings = res.data.data.filter(booking => booking.status !== 'Cancel');
 
         const seatNumbers = activeBookings.map(booking => booking.seatNumber);
-        console.log(seatNumbers);
 
         this.bookedSeats = seatNumbers;
       });
@@ -239,9 +239,6 @@ export default {
       Booking.saveBooking(fillableMovie)
         .then(() => {
           this.showSuccessSnackbar('Booking successfull');
-          setTimeout(() => {
-            this.$router.push('/movies');
-          }, 1000);
         })
         .catch(() => {
           this.showErrorSnackbar('Failed to make booking!');

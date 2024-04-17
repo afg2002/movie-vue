@@ -56,13 +56,14 @@ export default {
         
     },
     methods : {
-        async cancelBooking(id){
-            Bookings.cancelBookingById(id).then((res) =>{
-                if(res.data.responseCode == '00' && res.data){
-                    this.tabsItem[0].data = ''
+        async cancelBooking(id) {
+            Bookings.cancelBookingById(id).then((res) => {
+                if (res.data.responseCode == '00' && res.data) {
+                    this.loadBookings();
                 }
             })
         }
+
         ,
         async loadBookings() {
             this.isLoading = true;
