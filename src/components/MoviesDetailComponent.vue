@@ -32,7 +32,7 @@
                     </v-alert>
                     <v-chip
                       class="mr-2"
-                      v-for="(timeItem, index) in movie.screeningTime"
+                      v-for="(timeItem, index) in filteredScreeningTimes"
                       :key="index"
                       :color="selectedTime === timeItem ? 'primary' : 'default'"
                       @click="selectTime(timeItem)"
@@ -152,6 +152,17 @@ export default {
       }
       return '';
     },
+    filteredScreeningTimes() {
+      const now  = new Date();
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
+      return this.movie.screeningTime.filter((time) => {
+        const [hour, minute] = time.split(':');
+        const timeHour = parseInt(hour);
+        const timeMinute = parseInt(minute);
+        return timeHour >= currentHour || (timeHour === currentHour && timeMinute >= currentMinute);
+      })
+    },
     isSeatBooked() {
       const allBookedSeats = this.bookedSeats.flat();
       return (seat) => allBookedSeats.includes(seat);
@@ -229,16 +240,16 @@ export default {
       }
 
       const fillableMovie = {
-        screeningDate: this.movie.releaseDate,
+        screeningDate: new Date().toISOString(),  
         screeningTime: this.selectedTime,
         seatNumber: this.selectedSeats,
         movieId: this.movie.id,
         userId: store.state.profile.userId
-      }
+      };
       
       Booking.saveBooking(fillableMovie)
         .then(() => {
-          this.showSuccessSnackbar('Booking successfull');
+          this.showSuccessSnackbar('Booking successful');
         })
         .catch(() => {
           this.showErrorSnackbar('Failed to make booking!');
